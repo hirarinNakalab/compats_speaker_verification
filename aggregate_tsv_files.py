@@ -8,7 +8,7 @@ import scipy.spatial.distance as dis
 
 IGNORE_CRITERION = 10
 N_COLUMNS = 91
-ROOT_PATH = "C:/Users/rin/Desktop/researchProjects/compats_speaker_verification/result"
+ROOT_PATH = "C:/Users/rin/research/compats_speaker_verification/result"
 
 
 def remove_verbose_files(input_dirs):
@@ -22,8 +22,9 @@ def remove_verbose_files(input_dirs):
             try:
                 df = pd.read_csv(input_file, delimiter='\t')
             except:
-                print(f"can't open file: {input_file}")
-                continue
+                print(f"can't open file: remove {input_file}.")
+                os.remove(input_file)
+
             try:
                 if df['j'].max() - df['j'].min() < IGNORE_CRITERION:
                     os.remove(input_file)
@@ -134,9 +135,11 @@ def calc_fmeasure(dists, labels):
     return f1
 
 if __name__ == '__main__':
-    # input_dirs = os.listdir(ROOT_PATH)
-    # remove_verbose_files(input_dirs)
-    # remove_empty_directory(input_dirs)
-    # overwrite_agg_files(input_dirs)
+    input_dirs = os.listdir(ROOT_PATH)
+    remove_verbose_files(input_dirs)
+    remove_empty_directory(input_dirs)
+
+    input_dirs = os.listdir(ROOT_PATH)
+    overwrite_agg_files(input_dirs)
 
     main()
